@@ -1,0 +1,29 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+    - name: Install MongoDB
+      apt:
+        name: mongodb-org
+        state: present
+
+    - name: Start and enable mongod service
+      systemd:
+        name: mongod
+        state: started
+        enabled: yes
+
+- hosts: primary
+  become: yes
+  tasks:
+    - name: Initialize replica set
+      shell: |
+        mongo --eval 'rs.initiate({_id: "rs0", members: [{ _id: 0, host: "primary.example.com:27017" }]})'
+
+- hosts: replica
+  become: yes
+  tasks:
+    - name: Add replicas to the set
+      shell: |
+        mongo --eval 'rs.add("replica1.example.com:27017")'
+        mongo --eval 'rs.add("replica2.example.com:27017")'
