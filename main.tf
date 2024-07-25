@@ -51,7 +51,7 @@ resource "aws_security_group" "mongodb_sg" {
 }
 
 resource "aws_instance" "mongodb" {
-  ami                    = "ami-0abcdef1234567890" # Replace with a suitable Amazon Linux AMI ID
+  ami                    = "ami-0a31f06d64a91614b" # Replace with a suitable Amazon Linux AMI ID
   instance_type          = "t2.micro"
   count                  = 3
   key_name               = "project"
